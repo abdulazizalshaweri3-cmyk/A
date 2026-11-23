@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html class="dark" dir="rtl" lang="ar">
 <head>
+<!-- الاتصال المسبق الفوري والشامل بخوادم الخطوط في أول الرأس للقضاء على حظر العرض -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMZN2HX64F"></script>
 <script>
@@ -48,12 +52,12 @@
 <meta content="منصة التواصل الحصرية." name="twitter:description"/>
 <meta content="https://alshawery.vercel.app/preview.jpg" name="twitter:image"/>
 
-<!-- الاتصال المسبق والتحميل فائق السرعة للخطوط دون حظر العرض -->
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link as="style" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="preload"/>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
-<noscript><link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/></noscript>
+<!-- استدعاء خط Alexandria المعتمد فقط لتوفير 3.9 ميجابايت من حمولة الشبكة مع خاصية display=swap لعدم حظر العرض -->
+<link as="style" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&display=swap" rel="preload"/>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&display=swap" rel="stylesheet"/></noscript>
+
+<!-- أيقونات Material Symbols بتحميل غير حاجب -->
 <link as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="preload"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/></noscript>
@@ -64,13 +68,13 @@
       body { overscroll-behavior: none; }
     }
     ::-webkit-scrollbar { display: none; }
-    .font-arabic { font-family: 'Alexandria', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
-    .font-serif-lux { font-family: 'Playfair Display', serif; }
+    .font-arabic { font-family: 'Alexandria', system-ui, -apple-system, sans-serif; }
     .page-view { display: none; }
     .page-view.active { display: block; }
     body { font-display: swap; }
 </style>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- سكريبت Tailwind خفيف ونقي دون إضافات ثقيلة غير مستخدمة لحل مشكلة حظر العرض 750ms -->
+<script src="https://cdn.tailwindcss.com"></script>
 <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -95,8 +99,7 @@
             "on-surface-variant": "#c9c2b0"
           },
           fontFamily: {
-            sans: ['Alexandria', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-            serif: ['Playfair Display', 'serif']
+            sans: ['Alexandria', 'system-ui', 'sans-serif']
           }
         }
       }
