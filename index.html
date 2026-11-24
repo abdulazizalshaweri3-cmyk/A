@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html class="dark" dir="rtl" lang="ar">
 <head>
+<!-- Google tag (gtag.js) - تحليلات جوجل الرسمية المباشرة وغير الحاجبة للعرض -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KMZN2HX64F"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KMZN2HX64F');
+</script>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>&#x202B;الموقع الشخصي | الشاوري | alshawery&#x202C;</title>
@@ -990,7 +1000,7 @@ footer {
   <span id="toastMessage">تمت العملية بنجاح</span>
 </div>
 
-<!-- سكريبتات المعالجة الذكية والتحميل عند الطلب مع إرجاء التحليلات -->
+<!-- سكريبتات المعالجة والتنقل وربط قاعدة البيانات Supabase عند الطلب -->
 <script>
   const SUPABASE_URL = "https://jzfqyhskxfsfsrglmbac.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6ZnF5aHNreGZzZnNyZ2xtYmFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5MDUyMDMsImV4cCI6MjEwNzQ4MTIwM30.5Wx2X8GgXQWQ4_W6vExY3QZ_PhND3T_D68Iq-03LjYE";
@@ -1240,27 +1250,6 @@ footer {
     }
     showToast(message, true);
   }
-
-  // تأجيل تحميل Google Analytics ليتم في وقت خمول المتصفح (Idle) دون تعطيل فتح الصفحة نهائياً
-  window.addEventListener('load', () => {
-    const runAnalytics = () => {
-      const gaScript = document.createElement('script');
-      gaScript.async = true;
-      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-KMZN2HX64F";
-      document.head.appendChild(gaScript);
-
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-KMZN2HX64F');
-    };
-
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(runAnalytics, { timeout: 2500 });
-    } else {
-      setTimeout(runAnalytics, 1500);
-    }
-  });
 </script>
 </body>
 </html>
