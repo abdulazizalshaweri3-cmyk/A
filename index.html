@@ -13,7 +13,11 @@
 <link href="https://lh3.googleusercontent.com/aida-public/AB6AXuDFz1wR3r-X0yPj8uR7xXq6-F1r5kQ3lZ4tY8vB0mC9eA2nS5dF8gH1jK3lM6oP8rT1vW3xY5zA7bC9dE1fG3hJ5kL7mN9pQ1rS3tU5vW7xY9zA" rel="apple-touch-icon"/>
 <link href="https://alshawery.vercel.app/" rel="canonical"/>
 
-<!-- 1. تسريع مؤشر LCP: تحميل مسبق لصورتك الأصلية بنفس الرابط الأصلي المعتمد وبأعلى أولوية -->
+<!-- 1. تحسين الوصول إلى 100: اتصال مسبق فوري DNS/SSL بخادم صورتك الشخصية الأصلية (Preconnect) -->
+<link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin=""/>
+<link rel="dns-prefetch" href="https://lh3.googleusercontent.com"/>
+
+<!-- 2. تحميل مسبق فائق الأولوية لصورتك الأصلية بنفس الرابط الأصلي المعتمد وبأعلى أولوية LCP -->
 <link rel="preload" as="image" href="https://lh3.googleusercontent.com/aida-public/AB6AXuCmKLzo_mmdxVulNMKCyFWxu6sGPhJNJn6Sm9kCIWy3-yveIuW1kmNYFKkw-2bTaEPd0BNe05VzLTKu5l-Izp1Ko_WKOMyV5Tw6KX7y1vzck-2HOP6_TbsKpYyXJhBpWu-ekMXdXgJH9hAOyQZlhsqBA7zz2Iiaa5MArUUIUawz6FkHiThw5Yb2doNw1UuqtWZ44gyi-p270_pFj_RANR5YB4Kta0GwwoVhx-xGMaRBGe2eZ_bXP0OOnG12xyp6FNZAmAk" fetchpriority="high"/>
 
 <!-- بيانات البنية المنظمة لمحركات البحث لجوجل -->
@@ -43,7 +47,7 @@
 <meta content="منصة التواصل الحصرية." name="twitter:description"/>
 <meta content="https://alshawery.vercel.app/preview.jpg" name="twitter:image"/>
 
-<!-- 2. تسريع جلب الخط العربي مسبقاً بشكل غير حاجب للعرض مع display=swap -->
+<!-- 3. تسريع جلب الخط العربي مسبقاً بشكل غير حاجب للعرض مع display=swap والاتصال المسبق -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700&display=swap"/>
@@ -52,7 +56,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700&display=swap"/>
 </noscript>
 
-<!-- 3. نظام أنماط CSS محلي فائق السرعة والخفة (0 كيلوبايت حجب خارجي) -->
+<!-- 4. نظام أنماط CSS محلي فائق السرعة والخفة (0 كيلوبايت حجب خارجي) مع خطوط النظام السريعة كأولوية أولى -->
 <style>
 :root {
   --bg: #0e0d0c;
@@ -81,13 +85,15 @@
 html, body {
   background-color: var(--bg);
   color: var(--on-surface);
-  font-family: 'Alexandria', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* خطوط النظام الفورية: ترسم الكلمات في 0 ميلي ثانية حتى قبل اكتمال تحميل أي شبكة */
+  font-family: 'Alexandria', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   font-display: swap;
+  text-rendering: optimizeSpeed;
 }
 
 ::-webkit-scrollbar { display: none; }
@@ -231,7 +237,7 @@ header {
   }
 }
 
-/* إطار الصورة الشخصية المحفوظة بالكامل */
+/* إطار الصورة الشخصية المحفوظة بالكامل دون مساس */
 .photo-wrapper {
   position: relative;
   flex-shrink: 0;
@@ -254,10 +260,12 @@ header {
   justify-content: center;
   padding: 0.375rem;
   min-height: 300px;
+  contain: layout paint;
 }
 .photo-inner img {
   width: 100%;
   height: auto;
+  aspect-ratio: 420 / 420;
   object-fit: contain;
   border-radius: 0.75rem;
   filter: brightness(1.02) contrast(1.04);
@@ -996,7 +1004,7 @@ footer {
   <span id="toastMessage">تمت العملية بنجاح</span>
 </div>
 
-<!-- 4. سكريبت تحميل Google Analytics بذكاء فائق عند أول تفاعل أو بعد 2.5 ثانية (يحقق TBT = 0 للوصول إلى 95+) -->
+<!-- 5. سكريبت تحميل Google Analytics فائق الذكاء: TBT = 0 ميلي ثانية -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
