@@ -52,7 +52,7 @@
 <meta content="منصة التواصل الحصرية." name="twitter:description"/>
 <meta content="https://alshawery.vercel.app/preview.jpg" name="twitter:image"/>
 
-<!-- استدعاء خط Alexandria المعتمد بوزنين فقط (400 و 700) لتوفير أطنان البيانات وحل مشكلة تحميل الخطوط البالغة 3.9 ميجابايت -->
+<!-- استدعاء خط Alexandria المعتمد بوزنين فقط (400 و 700) لتوفير أطنان البيانات وحل مشكلة تحميل الخطوط -->
 <link as="style" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;700&display=swap" rel="preload"/>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;700&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;700&display=swap" rel="stylesheet"/></noscript>
@@ -62,485 +62,1204 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/></noscript>
 
+<!-- CSS نقي ومدمج بالكامل 100% لإلغاء محرك Tailwind الخارجي وحظر العرض نهائياً -->
 <style>
-    @layer base {
-      html, body { margin: 0; padding: 0; }
-      body { overscroll-behavior: none; }
-    }
-    ::-webkit-scrollbar { display: none; }
-    .font-arabic { font-family: 'Alexandria', system-ui, -apple-system, sans-serif; }
-    .page-view { display: none; }
-    .page-view.active { display: block; }
-    body { font-display: swap; }
-</style>
+  :root {
+    --background: #0e0d0c;
+    --surface: #141312;
+    --surface-container-lowest: #0b0a09;
+    --surface-container-low: #181716;
+    --surface-container: #201e1d;
+    --surface-container-high: #2a2826;
+    --surface-container-highest: #353331;
+    --primary: #f2ca50;
+    --primary-container: #d4af37;
+    --on-primary: #2b2100;
+    --on-primary-container: #554300;
+    --secondary: #e1c561;
+    --outline: #99907c;
+    --outline-variant: #413b2c;
+    --on-surface: #f5f2ee;
+    --on-surface-variant: #c9c2b0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: var(--on-surface);
+    font-family: 'Alexandria', system-ui, -apple-system, sans-serif;
+    font-display: swap;
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+  }
+  ::-webkit-scrollbar { display: none; }
+  ::selection { background-color: rgba(242, 202, 80, 0.2); color: var(--primary); }
+  
+  .font-arabic { font-family: 'Alexandria', system-ui, -apple-system, sans-serif; }
+  .font-sans { font-family: 'Alexandria', system-ui, -apple-system, sans-serif; }
+  .font-mono { font-family: monospace, ui-monospace; }
 
-<!-- سكريبت Tailwind نقي ومحسّن بدون إضافات forms أو container-queries الثقيلة لحل حظر العرض وتقليص JS غير المستخدم -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "background": "#0e0d0c",
-            "surface": "#141312",
-            "surface-container-lowest": "#0b0a09",
-            "surface-container-low": "#181716",
-            "surface-container": "#201e1d",
-            "surface-container-high": "#2a2826",
-            "surface-container-highest": "#353331",
-            "primary": "#f2ca50",
-            "primary-container": "#d4af37",
-            "on-primary": "#2b2100",
-            "on-primary-container": "#554300",
-            "secondary": "#e1c561",
-            "outline": "#99907c",
-            "outline-variant": "#413b2c",
-            "on-surface": "#f5f2ee",
-            "on-surface-variant": "#c9c2b0"
-          },
-          fontFamily: {
-            sans: ['Alexandria', 'system-ui', 'sans-serif']
-          }
-        }
-      }
-    };
-</script>
+  /* نظام العرض والتنقل بين الصفحات */
+  .page-view { display: none; }
+  .page-view.active { display: block; }
+
+  /* الخلفية الفاخرة الموزونة */
+  .lux-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -10;
+    overflow: hidden;
+  }
+  .lux-glow-top {
+    position: absolute;
+    top: -160px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 850px;
+    height: 580px;
+    background: radial-gradient(circle, rgba(242,202,80,0.15) 0%, rgba(212,175,55,0.05) 50%, transparent 70%);
+    border-radius: 9999px;
+    filter: blur(140px);
+  }
+  .lux-glow-right {
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    width: 480px;
+    height: 480px;
+    background: rgba(212,175,55,0.08);
+    border-radius: 9999px;
+    filter: blur(160px);
+  }
+  .lux-glow-left {
+    position: absolute;
+    bottom: 40px;
+    left: 25%;
+    width: 420px;
+    height: 420px;
+    background: rgba(242,202,80,0.05);
+    border-radius: 9999px;
+    filter: blur(130px);
+  }
+  .lux-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(242,202,80,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: 0.7;
+  }
+
+  /* الحاويات والهيدر */
+  .site-header {
+    width: 100%;
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5rem 1rem 0.5rem;
+  }
+  @media (min-width: 640px) { .site-header { padding-left: 1.5rem; padding-right: 1.5rem; } }
+  .header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .header-actions { display: flex; align-items: center; gap: 0.625rem; }
+  
+  /* الأزرار الموحدة */
+  .btn-header {
+    height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-high);
+    border: 1px solid rgba(65, 59, 44, 0.6);
+    color: var(--on-surface);
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+  }
+  @media (min-width: 640px) { .btn-header { font-size: 0.875rem; } }
+  .btn-header:hover {
+    background-color: var(--surface-container-highest);
+    color: var(--primary);
+  }
+  .btn-header:active { transform: scale(0.95); }
+  .btn-header .material-symbols-outlined {
+    font-size: 1.125rem;
+    color: var(--primary);
+    transition: transform 0.2s ease;
+  }
+  .btn-header:hover .material-symbols-outlined { transform: scale(1.1); }
+
+  /* الحاوية الرئيسية */
+  .main-container {
+    width: 100%;
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem 1rem 3rem;
+  }
+  @media (min-width: 640px) { .main-container { padding-left: 1.5rem; padding-right: 1.5rem; } }
+
+  /* بطاقة الهيرو التعريفية */
+  .hero-card {
+    position: relative;
+    border-radius: 1.5rem;
+    background-color: rgba(32, 30, 29, 0.6);
+    border: 1px solid rgba(65, 59, 44, 0.5);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .hero-card { padding: 2.5rem; } }
+  .hero-card-border-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(242, 202, 80, 0.4), transparent);
+  }
+  .hero-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .hero-layout {
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+  @media (min-width: 1024px) { .hero-layout { gap: 3rem; } }
+
+  /* حاوية الصورة الشخصية الأصلية */
+  .hero-photo-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+  }
+  @media (min-width: 768px) { .hero-photo-wrapper { width: 380px; } }
+  @media (min-width: 1024px) { .hero-photo-wrapper { width: 420px; } }
+  .hero-photo-glow {
+    position: absolute;
+    inset: -0.25rem;
+    border-radius: 1rem;
+    background: linear-gradient(to bottom, rgba(242, 202, 80, 0.3), rgba(212, 175, 55, 0.15), transparent);
+    opacity: 0.6;
+    filter: blur(8px);
+    transition: opacity 0.7s ease;
+  }
+  .hero-photo-wrapper:hover .hero-photo-glow { opacity: 1; }
+  .hero-photo-frame {
+    position: relative;
+    width: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(242, 202, 80, 0.3);
+    background-color: var(--surface-container-lowest);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    min-height: 300px;
+  }
+  @media (min-width: 640px) { .hero-photo-frame { padding: 0.375rem; } }
+  .hero-photo-frame img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    filter: brightness(1.02) contrast(1.04);
+    transition: transform 0.7s ease;
+    display: block;
+  }
+  .hero-photo-wrapper:hover .hero-photo-frame img { transform: scale(1.05); }
+
+  /* نصوص الهيرو */
+  .hero-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .hero-text {
+      align-items: flex-start;
+      text-align: right;
+    }
+  }
+  .hero-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--on-surface);
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  @media (min-width: 640px) { .hero-title { font-size: 2.25rem; } }
+  @media (min-width: 1024px) { .hero-title { font-size: 3rem; } }
+  .gradient-gold-text {
+    background: linear-gradient(to left, var(--primary), var(--primary-container), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-desc {
+    font-size: 0.875rem;
+    color: var(--on-surface-variant);
+    max-width: 36rem;
+    line-height: 1.625;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+  @media (min-width: 640px) { .hero-desc { font-size: 1rem; } }
+
+  /* عناوين الأقسام */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .section-indicator { display: flex; align-items: center; gap: 0.625rem; }
+  .dot-gold { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background-color: var(--primary); }
+  .section-title { font-size: 1.125rem; font-weight: 700; color: var(--on-surface); letter-spacing: 0.025em; }
+  @media (min-width: 640px) { .section-title { font-size: 1.25rem; } }
+
+  /* شبكة البطاقات الثلاث */
+  .contact-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 768px) { .contact-cards-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .contact-card {
+    position: relative;
+    border-radius: 1rem;
+    background-color: rgba(32, 30, 29, 0.7);
+    border: 1px solid rgba(65, 59, 44, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .contact-card:hover {
+    background-color: var(--surface-container);
+    border-color: rgba(242, 202, 80, 0.5);
+  }
+  .contact-card-blur-glow {
+    position: absolute;
+    top: -3rem;
+    left: -3rem;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 9999px;
+    filter: blur(20px);
+    transition: all 0.3s ease;
+  }
+  .glow-whatsapp { background-color: rgba(242, 202, 80, 0.1); }
+  .contact-card:hover .glow-whatsapp { background-color: rgba(242, 202, 80, 0.2); }
+  .glow-telegram { background-color: rgba(225, 197, 97, 0.1); }
+  .contact-card:hover .glow-telegram { background-color: rgba(225, 197, 97, 0.2); }
+  .glow-email { background-color: rgba(212, 175, 55, 0.1); }
+  .contact-card:hover .glow-email { background-color: rgba(212, 175, 55, 0.2); }
+
+  .card-icon-box {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-highest);
+    border: 1px solid rgba(65, 59, 44, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    margin-bottom: 1.25rem;
+    transition: all 0.3s ease;
+  }
+  .card-icon-box-primary { color: var(--primary); }
+  .contact-card:hover .card-icon-box-primary { background-color: var(--primary); color: var(--on-primary); }
+  .card-icon-box-secondary { color: var(--secondary); }
+  .contact-card:hover .card-icon-box-secondary { background-color: var(--secondary); color: var(--on-primary); }
+  .card-icon-box-container { color: var(--primary-container); }
+  .contact-card:hover .card-icon-box-container { background-color: var(--primary-container); color: var(--on-primary); }
+  .card-title { font-size: 1.125rem; font-weight: 700; color: var(--on-surface); margin-bottom: 0.25rem; }
+
+  .info-badge-box {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background-color: rgba(11, 10, 9, 0.8);
+    border: 1px solid rgba(65, 59, 44, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.2s ease;
+  }
+  .contact-card:hover .info-badge-box { border-color: rgba(225, 197, 97, 0.3); }
+  .info-badge-label { font-size: 0.75rem; color: var(--outline); }
+  .info-badge-val { font-size: 0.75rem; font-weight: 600; color: var(--secondary); font-family: monospace; }
+  @media (min-width: 640px) { .info-badge-val { font-size: 0.875rem; } }
+
+  .card-btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.625rem;
+  }
+  .pt-whatsapp { padding-top: 2rem; }
+  .pt-badge { padding-top: 0.5rem; }
+
+  .btn-action-primary {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-high);
+    color: #ffffff;
+    border: 1px solid rgba(65, 59, 44, 0.5);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-action-primary:hover { background-color: var(--surface-container-highest); }
+  .btn-action-primary:active { transform: scale(0.95); }
+  .btn-action-primary .material-symbols-outlined { transform: rotate(180deg); color: #ffffff; font-size: 1rem; }
+
+  .btn-action-secondary {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-high);
+    border: 1px solid rgba(65, 59, 44, 0.5);
+    color: var(--on-surface);
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .btn-action-secondary:hover { background-color: var(--surface-container-highest); color: var(--primary); }
+  .btn-action-secondary:active { transform: scale(0.95); }
+
+  /* صفحة تطبيقات Android */
+  .apps-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(65, 59, 44, 0.3);
+  }
+  .apps-page-title { font-size: 1.5rem; font-weight: 700; color: var(--on-surface); }
+  @media (min-width: 640px) { .apps-page-title { font-size: 1.875rem; } }
+  .apps-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+  @media (min-width: 768px) { .apps-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .app-card {
+    border-radius: 1rem;
+    background-color: rgba(32, 30, 29, 0.7);
+    border: 1px solid rgba(65, 59, 44, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .app-card:hover { border-color: rgba(242, 202, 80, 0.5); }
+  .app-header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .app-identity { display: flex; align-items: center; gap: 0.75rem; }
+  .app-icon-wrapper {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-highest);
+    border: 1px solid rgba(242, 202, 80, 0.3);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    padding: 0.5rem;
+  }
+  .app-icon-wrapper img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) invert(1) brightness(2); }
+  .app-name { font-size: 1.25rem; font-weight: 700; color: var(--on-surface); }
+  .app-meta { display: inline-block; font-size: 0.75rem; color: var(--secondary); margin-top: 0.125rem; }
+  .app-desc { font-size: 0.875rem; color: var(--on-surface-variant); font-weight: 300; line-height: 1.625; margin-bottom: 1.5rem; }
+  
+  .app-btns-stack { display: flex; flex-direction: column; gap: 0.75rem; padding-top: 0.5rem; }
+  .btn-app-action {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-high);
+    color: var(--on-surface);
+    border: 1px solid rgba(65, 59, 44, 0.6);
+    font-size: 0.875rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn-app-action:hover { background-color: var(--surface-container-highest); color: var(--primary); }
+  .btn-app-action:active { transform: scale(0.95); }
+  .btn-app-action .material-symbols-outlined { font-size: 1.25rem; color: var(--primary); transition: transform 0.2s ease; }
+  .btn-app-action:hover .material-symbols-outlined { transform: scale(1.1); }
+  
+  .app-empty-slot {
+    border-radius: 1rem;
+    background-color: rgba(32, 30, 29, 0.3);
+    border: 1px dashed rgba(65, 59, 44, 0.3);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 1.5rem;
+    min-height: 220px;
+  }
+
+  /* نماذج الدخول والتسجيل */
+  .auth-container {
+    width: 100%;
+    max-width: 28rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2.5rem 1rem 4rem;
+  }
+  .auth-card {
+    border-radius: 1.5rem;
+    background-color: rgba(32, 30, 29, 0.8);
+    border: 1px solid rgba(65, 59, 44, 0.5);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  .auth-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(65, 59, 44, 0.3);
+  }
+  .auth-card-title { font-size: 1.25rem; font-weight: 700; color: var(--on-surface); }
+  .auth-back-link {
+    font-size: 0.75rem;
+    color: var(--outline);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.2s ease;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .auth-back-link:hover { color: var(--primary); }
+  .auth-form-space { display: flex; flex-direction: column; gap: 1rem; }
+  .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--on-surface-variant); margin-bottom: 0.375rem; }
+  .form-input {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0 0.875rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-lowest);
+    border: 1px solid rgba(65, 59, 44, 0.5);
+    font-size: 0.875rem;
+    color: var(--on-surface);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+  .input-password-wrapper { position: relative; display: flex; align-items: center; }
+  .input-password-wrapper .form-input { padding-left: 2.75rem; padding-right: 0.875rem; }
+  .toggle-pw-btn {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--outline);
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0.25rem;
+    background: none;
+    border: none;
+  }
+  .toggle-pw-btn:hover { color: var(--primary); }
+  .forgot-pw-link {
+    font-size: 0.75rem;
+    color: var(--outline);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .forgot-pw-link:hover { color: var(--primary); }
+  .btn-auth-submit {
+    width: 100%;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-high);
+    border: 1px solid rgba(65, 59, 44, 0.6);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    margin-top: 1.5rem;
+  }
+  .btn-auth-submit:hover { background-color: var(--surface-container-highest); }
+  .btn-auth-submit:active { transform: scale(0.95); }
+  .auth-footer-prompt {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(65, 59, 44, 0.2);
+    text-align: center;
+  }
+  .auth-footer-prompt p { font-size: 0.75rem; color: var(--outline); }
+  .auth-switch-btn {
+    color: var(--primary);
+    font-weight: 600;
+    margin-right: 0.25rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+  }
+  .auth-switch-btn:hover { text-decoration: underline; }
+  .reset-block-info {
+    padding: 0.875rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-lowest);
+    border: 1px solid rgba(65, 59, 44, 0.4);
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
+    line-height: 1.625;
+  }
+  .hidden { display: none !important; }
+  .opacity-50 { opacity: 0.5 !important; }
+
+  /* الفوتر */
+  .site-footer {
+    width: 100%;
+    border-top: 1px solid rgba(65, 59, 44, 0.2);
+    background-color: rgba(11, 10, 9, 0.8);
+    padding: 2rem 0;
+  }
+  .footer-content {
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    font-size: 0.75rem;
+    color: var(--outline);
+  }
+  .footer-privacy-link {
+    font-size: 11px;
+    color: var(--outline);
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+  }
+  .footer-privacy-link:hover { color: var(--primary); }
+
+  /* نافذة عن التطبيق المنبثقة */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  @media (min-width: 640px) { .modal-overlay { padding: 1rem; } }
+  .modal-box {
+    position: relative;
+    width: 100%;
+    max-width: 32rem;
+    max-height: 85vh;
+    border-radius: 1.5rem;
+    background-color: #141312;
+    border: 1px solid rgba(65, 59, 44, 0.6);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .modal-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: #181716;
+    border-bottom: 1px solid rgba(65, 59, 44, 0.4);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  @media (min-width: 640px) { .modal-sticky-header { padding: 1rem 1.5rem; } }
+  .modal-close-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.75rem;
+    background-color: var(--surface-container-highest);
+    border: 1px solid rgba(65, 59, 44, 0.5);
+    color: var(--outline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    cursor: pointer;
+  }
+  .modal-close-btn:hover { background-color: var(--surface-container-high); color: var(--primary); }
+  .modal-scroll-content {
+    overflow-y: auto;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    color: var(--on-surface);
+    font-size: 0.75rem;
+    line-height: 1.625;
+    overscroll-behavior: contain;
+  }
+  @media (min-width: 640px) { .modal-scroll-content { padding: 1.5rem; font-size: 0.875rem; } }
+  .modal-section-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  @media (min-width: 640px) { .modal-section-title { font-size: 1rem; } }
+  .modal-dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; background-color: var(--primary); flex-shrink: 0; }
+
+  /* التنبيه المنبثق Toast */
+  .toast-popup {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translate(-50%, 0.75rem);
+    background-color: var(--surface-container-highest);
+    border: 1px solid rgba(242, 202, 80, 0.4);
+    color: var(--on-surface);
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 50;
+  }
+  .toast-popup.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+  }
+  .toast-text { font-size: 0.75rem; font-weight: 600; color: var(--on-surface); }
+  @media (min-width: 640px) { .toast-text { font-size: 0.875rem; } }
+</style>
 </head>
 
-<body class="bg-background font-arabic text-on-surface antialiased min-h-screen relative overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+<body class="selection-gold">
 <!-- الخلفية الفاخرة الموزونة -->
-<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[850px] h-[580px] bg-gradient-to-b from-primary/15 via-primary-container/5 to-transparent rounded-full blur-[140px]"></div>
-<div class="absolute top-1/2 right-1/4 w-[480px] h-[480px] bg-[#d4af37]/8 rounded-full blur-[160px]"></div>
-<div class="absolute bottom-10 left-1/4 w-[420px] h-[420px] bg-primary/5 rounded-full blur-[130px]"></div>
-<div class="absolute inset-0 bg-[radial-gradient(rgba(242,202,80,0.04)_1px,transparent_1px)] [background-size:32px_32px] opacity-70"></div>
+<div class="lux-bg">
+  <div class="lux-glow-top"></div>
+  <div class="lux-glow-right"></div>
+  <div class="lux-glow-left"></div>
+  <div class="lux-grid"></div>
 </div>
 
 <!-- الهيدر العلوي: الأزرار الثلاثة الموحدة الشغالة بالكامل -->
-<header class="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-2">
-<nav class="flex items-center justify-between gap-4">
-<!-- اليمين في نمط RTL: زرا تسجيل الدخول وإنشاء حساب -->
-<div class="flex items-center gap-2.5">
-<button class="h-10 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-on-surface hover:text-primary text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-lg transition-all active:scale-95 group cursor-pointer" onclick="navigateTo('register')" type="button">
-<span>إنشاء حساب</span>
-<span class="material-symbols-outlined text-[18px] text-primary group-hover:scale-110 transition-transform">person_add</span>
-</button>
-<button class="h-10 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-on-surface hover:text-primary text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-lg transition-all active:scale-95 group cursor-pointer" onclick="navigateTo('login')" type="button">
-<span>تسجيل الدخول</span>
-<span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-0.5 transition-transform">login</span>
-</button>
-</div>
-<!-- اليسار في نمط RTL: زر تطبيق Android -->
-<button class="h-10 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-on-surface hover:text-primary text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-lg transition-all active:scale-95 group cursor-pointer" onclick="navigateTo('apps')" type="button">
-<span>تطبيق Android</span>
-<span class="material-symbols-outlined text-[19px] text-primary group-hover:scale-110 transition-transform">android</span>
-</button>
-</nav>
+<header class="site-header">
+  <nav class="header-nav">
+    <!-- اليمين في نمط RTL: زرا تسجيل الدخول وإنشاء حساب -->
+    <div class="header-actions">
+      <button class="btn-header" onclick="navigateTo('register')" type="button">
+        <span>إنشاء حساب</span>
+        <span class="material-symbols-outlined">person_add</span>
+      </button>
+      <button class="btn-header" onclick="navigateTo('login')" type="button">
+        <span>تسجيل الدخول</span>
+        <span class="material-symbols-outlined">login</span>
+      </button>
+    </div>
+    <!-- اليسار في نمط RTL: زر تطبيق Android -->
+    <button class="btn-header" onclick="navigateTo('apps')" type="button">
+      <span>تطبيق Android</span>
+      <span class="material-symbols-outlined">android</span>
+    </button>
+  </nav>
 </header>
 
 <!-- ==================== الصفحة 1: الموقع الشخصي ==================== -->
-<main class="page-view active w-full max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-12" id="view-home">
-<section class="relative rounded-3xl bg-surface-container/60 border border-outline-variant/50 backdrop-blur-2xl p-6 sm:p-10 shadow-2xl shadow-black/60 mb-10 overflow-hidden">
-<div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
-<div class="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
-<div class="relative group shrink-0 w-full md:w-[380px] lg:w-[420px]">
-<div class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-primary/30 via-primary-container/15 to-transparent opacity-60 blur-md group-hover:opacity-100 transition-all duration-700"></div>
-<div class="relative w-full rounded-2xl overflow-hidden border border-primary/30 bg-surface-container-lowest shadow-2xl flex items-center justify-center p-1 sm:p-1.5 min-h-[300px]">
-<!-- صورتك الشخصية الأصلية الكاملة والمحفوظة 100% دون أي مساس أو ضغط -->
-<img alt="الصورة الشخصية" class="w-full h-auto object-contain rounded-xl filter brightness-[1.02] contrast-[1.04] transition-transform duration-700 group-hover:scale-105" decoding="async" fetchpriority="high" height="420" loading="eager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmKLzo_mmdxVulNMKCyFWxu6sGPhJNJn6Sm9kCIWy3-yveIuW1kmNYFKkw-2bTaEPd0BNe05VzLTKu5l-Izp1Ko_WKOMyV5Tw6KX7y1vzck-2HOP6_TbsKpYyXJhBpWu-ekMXdXgJH9hAOyQZlhsqBA7zz2Iiaa5MArUUIUawz6FkHiThw5Yb2doNw1UuqtWZ44gyi-p270_pFj_RANR5YB4Kta0GwwoVhx-xGMaRBGe2eZ_bXP0OOnG12xyp6FNZAmAk" width="420"/>
-</div>
-</div>
-<div class="flex-1 flex flex-col items-center md:items-start text-center md:text-right">
-<h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface tracking-tight leading-tight mb-4">
-منصة التواصل <span class="text-transparent bg-clip-text bg-gradient-to-l from-primary via-primary-container to-secondary">الحصرية</span>
-</h1>
-<p class="text-sm sm:text-base text-on-surface-variant max-w-xl leading-relaxed mb-6 font-light">
-مرحباً بك في المساحة المخصصة للتواصل المباشر والفوري. تم اعتماد وتأمين القنوات الثلاث الرسمية التالية لاستقبال الرسائل والمحادثات.
-</p>
-</div>
-</div>
-</section>
+<main class="page-view active main-container" id="view-home">
+  <section class="hero-card">
+    <div class="hero-card-border-line"></div>
+    <div class="hero-layout">
+      <div class="hero-photo-wrapper">
+        <div class="hero-photo-glow"></div>
+        <div class="hero-photo-frame">
+          <!-- صورتك الشخصية الأصلية الكاملة والمحفوظة 100% دون أي مساس أو ضغط وبأعلى جودة -->
+          <img alt="الصورة الشخصية" decoding="async" fetchpriority="high" height="420" loading="eager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmKLzo_mmdxVulNMKCyFWxu6sGPhJNJn6Sm9kCIWy3-yveIuW1kmNYFKkw-2bTaEPd0BNe05VzLTKu5l-Izp1Ko_WKOMyV5Tw6KX7y1vzck-2HOP6_TbsKpYyXJhBpWu-ekMXdXgJH9hAOyQZlhsqBA7zz2Iiaa5MArUUIUawz6FkHiThw5Yb2doNw1UuqtWZ44gyi-p270_pFj_RANR5YB4Kta0GwwoVhx-xGMaRBGe2eZ_bXP0OOnG12xyp6FNZAmAk" width="420"/>
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1 class="hero-title">
+          منصة التواصل <span class="gradient-gold-text">الحصرية</span>
+        </h1>
+        <p class="hero-desc">
+          مرحباً بك في المساحة المخصصة للتواصل المباشر والفوري. تم اعتماد وتأمين القنوات الثلاث الرسمية التالية لاستقبال الرسائل والمحادثات.
+        </p>
+      </div>
+    </div>
+  </section>
 
-<div class="flex items-center justify-between mb-6 px-2">
-<div class="flex items-center gap-2.5">
-<span class="w-2 h-2 rounded-full bg-primary"></span>
-<h2 class="text-lg sm:text-xl font-bold text-on-surface tracking-wide">قنوات الاتصال المعتمدة</h2>
-</div>
-</div>
+  <div class="section-header">
+    <div class="section-indicator">
+      <span class="dot-gold"></span>
+      <h2 class="section-title">قنوات الاتصال المعتمدة</h2>
+    </div>
+  </div>
 
-<!-- البطاقات الثلاث -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-<!-- 1. واتساب -->
-<div class="group relative rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-outline-variant/40 hover:border-primary/50 backdrop-blur-xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between overflow-hidden">
-<div class="absolute -top-12 -left-12 w-28 h-28 bg-primary/10 rounded-full blur-xl group-hover:bg-primary/20 transition-all duration-300"></div>
-<div>
-<div class="flex items-center justify-start mb-5">
-<div class="w-12 h-12 rounded-xl bg-surface-container-highest border border-outline-variant/50 text-primary flex items-center justify-center shadow-inner group-hover:bg-primary group-hover:text-on-primary transition-all duration-300">
-<span class="material-symbols-outlined text-[26px]">chat</span>
-</div>
-</div>
-<h3 class="text-lg font-bold text-on-surface mb-1">واتساب</h3>
-</div>
-<div class="grid grid-cols-2 gap-2.5 pt-8">
-<a class="w-full py-2.5 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-white border border-outline-variant/50 text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95" href="#">
-<span>مراسلة</span>
-<span class="material-symbols-outlined text-[16px] rotate-180 text-white">arrow_forward</span>
-</a>
-<button class="w-full py-2.5 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/50 text-on-surface hover:text-primary text-xs font-semibold flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer" onclick="copyText('', 'قناة الواتساب معتمدة')" title="نسخ" type="button">
-<span class="material-symbols-outlined text-[17px]">content_copy</span>
-<span>نسخ</span>
-</button>
-</div>
-</div>
+  <!-- البطاقات الثلاث -->
+  <div class="contact-cards-grid">
+    <!-- 1. واتساب -->
+    <div class="contact-card">
+      <div class="contact-card-blur-glow glow-whatsapp"></div>
+      <div>
+        <div class="card-icon-box card-icon-box-primary">
+          <span class="material-symbols-outlined" style="font-size: 26px;">chat</span>
+        </div>
+        <h3 class="card-title">واتساب</h3>
+      </div>
+      <div class="card-btn-grid pt-whatsapp">
+        <a class="btn-action-primary" href="#">
+          <span>مراسلة</span>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+        <button class="btn-action-secondary" onclick="copyText('', 'قناة الواتساب معتمدة')" title="نسخ" type="button">
+          <span class="material-symbols-outlined" style="font-size: 17px;">content_copy</span>
+          <span>نسخ</span>
+        </button>
+      </div>
+    </div>
 
-<!-- 2. تيليجرام -->
-<div class="group relative rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-outline-variant/40 hover:border-secondary/50 backdrop-blur-xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between overflow-hidden">
-<div class="absolute -top-12 -left-12 w-28 h-28 bg-secondary/10 rounded-full blur-xl group-hover:bg-secondary/20 transition-all duration-300"></div>
-<div>
-<div class="flex items-center justify-start mb-5">
-<div class="w-12 h-12 rounded-xl bg-surface-container-highest border border-outline-variant/50 text-secondary flex items-center justify-center shadow-inner group-hover:bg-secondary group-hover:text-on-primary transition-all duration-300">
-<span class="material-symbols-outlined text-[26px]">send</span>
-</div>
-</div>
-<h3 class="text-lg font-bold text-on-surface mb-1">تيليجرام</h3>
-<div class="p-3 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/40 flex items-center justify-between mb-6 group-hover:border-secondary/30 transition-colors">
-<span class="text-xs text-outline">اسم المستخدم</span>
-<span class="font-mono text-xs sm:text-sm font-semibold text-secondary tracking-normal" dir="ltr">@TheBestIsYetToCome3</span>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-2.5 pt-2">
-<a class="w-full py-2.5 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-white border border-outline-variant/50 text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95" href="https://t.me/TheBestIsYetToCome3" rel="noopener noreferrer" target="_blank">
-<span>محادثة</span>
-<span class="material-symbols-outlined text-[16px] rotate-180 text-white">arrow_forward</span>
-</a>
-<button class="w-full py-2.5 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/50 text-on-surface hover:text-primary text-xs font-semibold flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer" onclick="copyText('@TheBestIsYetToCome3', 'تم نسخ معرف التيليجرام: @TheBestIsYetToCome3')" title="نسخ المعرف" type="button">
-<span class="material-symbols-outlined text-[17px]">content_copy</span>
-<span>نسخ</span>
-</button>
-</div>
-</div>
+    <!-- 2. تيليجرام -->
+    <div class="contact-card">
+      <div class="contact-card-blur-glow glow-telegram"></div>
+      <div>
+        <div class="card-icon-box card-icon-box-secondary">
+          <span class="material-symbols-outlined" style="font-size: 26px;">send</span>
+        </div>
+        <h3 class="card-title">تيليجرام</h3>
+        <div class="info-badge-box">
+          <span class="info-badge-label">اسم المستخدم</span>
+          <span class="info-badge-val" dir="ltr">@TheBestIsYetToCome3</span>
+        </div>
+      </div>
+      <div class="card-btn-grid pt-badge">
+        <a class="btn-action-primary" href="https://t.me/TheBestIsYetToCome3" rel="noopener noreferrer" target="_blank">
+          <span>محادثة</span>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+        <button class="btn-action-secondary" onclick="copyText('@TheBestIsYetToCome3', 'تم نسخ معرف التيليجرام: @TheBestIsYetToCome3')" title="نسخ المعرف" type="button">
+          <span class="material-symbols-outlined" style="font-size: 17px;">content_copy</span>
+          <span>نسخ</span>
+        </button>
+      </div>
+    </div>
 
-<!-- 3. البريد الإلكتروني -->
-<div class="group relative rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-outline-variant/40 hover:border-primary-container/50 backdrop-blur-xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between overflow-hidden">
-<div class="absolute -top-12 -left-12 w-28 h-28 bg-primary-container/10 rounded-full blur-xl group-hover:bg-primary-container/20 transition-all duration-300"></div>
-<div>
-<div class="flex items-center justify-start mb-5">
-<div class="w-12 h-12 rounded-xl bg-surface-container-highest border border-outline-variant/50 text-primary-container flex items-center justify-center shadow-inner group-hover:bg-primary-container group-hover:text-on-primary transition-all duration-300">
-<span class="material-symbols-outlined text-[26px]">mail</span>
-</div>
-</div>
-<h3 class="text-lg font-bold text-on-surface mb-1">البريد الإلكتروني</h3>
-<div class="p-3 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/40 flex items-center justify-between mb-6 group-hover:border-primary-container/30 transition-colors">
-<span class="text-xs text-outline">البريد المعتمد</span>
-<span class="font-mono text-xs sm:text-[13px] font-semibold text-secondary tracking-normal" dir="ltr">alshawery55@yahoo.com</span>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-2.5 pt-2">
-<a class="w-full py-2.5 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-white border border-outline-variant/50 text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95" href="mailto:alshawery55@yahoo.com">
-<span>إرسال</span>
-<span class="material-symbols-outlined text-[16px] rotate-180 text-white">arrow_forward</span>
-</a>
-<button class="w-full py-2.5 px-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/50 text-on-surface hover:text-primary text-xs font-semibold flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer" onclick="copyText('alshawery55@yahoo.com', 'تم نسخ البريد الإلكتروني بنجاح')" title="نسخ الإيميل" type="button">
-<span class="material-symbols-outlined text-[17px]">content_copy</span>
-<span>نسخ</span>
-</button>
-</div>
-</div>
-</div>
+    <!-- 3. البريد الإلكتروني -->
+    <div class="contact-card">
+      <div class="contact-card-blur-glow glow-email"></div>
+      <div>
+        <div class="card-icon-box card-icon-box-container">
+          <span class="material-symbols-outlined" style="font-size: 26px;">mail</span>
+        </div>
+        <h3 class="card-title">البريد الإلكتروني</h3>
+        <div class="info-badge-box">
+          <span class="info-badge-label">البريد المعتمد</span>
+          <span class="info-badge-val" dir="ltr">alshawery55@yahoo.com</span>
+        </div>
+      </div>
+      <div class="card-btn-grid pt-badge">
+        <a class="btn-action-primary" href="mailto:alshawery55@yahoo.com">
+          <span>إرسال</span>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+        <button class="btn-action-secondary" onclick="copyText('alshawery55@yahoo.com', 'تم نسخ البريد الإلكتروني بنجاح')" title="نسخ الإيميل" type="button">
+          <span class="material-symbols-outlined" style="font-size: 17px;">content_copy</span>
+          <span>نسخ</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </main>
 
 <!-- ==================== الصفحة 2: تطبيقات Android ==================== -->
-<main class="page-view w-full max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-12" id="view-apps">
-<div class="flex items-center justify-between mb-8 pb-4 border-b border-outline-variant/30">
-<h1 class="text-2xl sm:text-3xl font-bold text-on-surface">تطبيقات Android</h1>
-<button class="h-10 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-on-surface hover:text-primary text-xs sm:text-sm font-semibold flex items-center gap-2 shadow transition-all active:scale-95 cursor-pointer" onclick="navigateTo('home')" type="button">
-<span>العودة للموقع الشخصي</span>
-<span class="material-symbols-outlined text-[18px]">arrow_back</span>
-</button>
-</div>
+<main class="page-view main-container" id="view-apps">
+  <div class="apps-page-header">
+    <h1 class="apps-page-title">تطبيقات Android</h1>
+    <button class="btn-header" onclick="navigateTo('home')" type="button">
+      <span>العودة للموقع الشخصي</span>
+      <span class="material-symbols-outlined" style="transform: rotate(180deg);">arrow_forward</span>
+    </button>
+  </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<!-- بطاقة Budget indicator -->
-<div class="rounded-2xl bg-surface-container/70 border border-outline-variant/40 hover:border-primary/50 backdrop-blur-xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between">
-<div>
-<div class="flex items-center justify-between mb-4">
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 rounded-xl bg-surface-container-highest border border-primary/30 text-primary flex items-center justify-center shadow-inner overflow-hidden p-2">
-<img alt="Budget Indicator" class="w-full h-full object-contain filter drop-shadow invert brightness-200" height="48" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-o-b50TQPcER8KtT3BVwEsSUpWSIPIeQ9fG-fHJsYGO-eeDh-QpEeDncin4etO9USDVjc8QAamYAxXY7NonIQFOKK0_OYLx7zQXv_l6pxvSOIs0I1U60q1jEjqSDtLlJfaJtPdI8RFAE3IRVg85QVLlSW8foYyRqDxBmZpZn3-rr6fof-LhwOs0gzkmkvbt2bfSEnTeoZ5dFROLj3zNcOJEL3eZOrTybE_GLT_y59S9AxV4XkEktFXUtn4c4NjiKJOCE" width="48"/>
-</div>
-<div>
-<h2 class="text-xl font-bold text-on-surface">Budget indicator</h2>
-<span class="inline-block text-xs font-sans text-secondary mt-0.5">24.28 MB • الإصدار 1.0</span>
-</div>
-</div>
-</div>
-<p class="text-sm text-on-surface-variant font-light leading-relaxed mb-6">
-تطبيق خاص لمعرفة حالة الرصيد، ومن خلاله تستطيع معرفة كافة التفاصيل المتعلقة برصيدك بدقة وسهولة.
-</p>
-</div>
-<div class="space-y-3 pt-2">
-<button class="w-full py-3 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface hover:text-primary border border-outline-variant/60 text-sm font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group cursor-pointer" onclick="openAboutModal()" type="button">
-<span class="material-symbols-outlined text-[20px] text-primary group-hover:scale-110 transition-transform">info</span>
-<span>عن التطبيق</span>
-</button>
-<a class="w-full py-3 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface hover:text-primary border border-outline-variant/60 text-sm font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group" download="BudgetIndicator.apk" href="BudgetIndicator.apk">
-<span class="material-symbols-outlined text-[20px] text-primary group-hover:scale-110 transition-transform">download</span>
-<span>تحميل التطبيق</span>
-</a>
-</div>
-</div>
+  <div class="apps-grid">
+    <!-- بطاقة Budget indicator -->
+    <div class="app-card">
+      <div>
+        <div class="app-header-box">
+          <div class="app-identity">
+            <div class="app-icon-wrapper">
+              <img alt="Budget Indicator" height="48" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-o-b50TQPcER8KtT3BVwEsSUpWSIPIeQ9fG-fHJsYGO-eeDh-QpEeDncin4etO9USDVjc8QAamYAxXY7NonIQFOKK0_OYLx7zQXv_l6pxvSOIs0I1U60q1jEjqSDtLlJfaJtPdI8RFAE3IRVg85QVLlSW8foYyRqDxBmZpZn3-rr6fof-LhwOs0gzkmkvbt2bfSEnTeoZ5dFROLj3zNcOJEL3eZOrTybE_GLT_y59S9AxV4XkEktFXUtn4c4NjiKJOCE" width="48"/>
+            </div>
+            <div>
+              <h2 class="app-name">Budget indicator</h2>
+              <span class="app-meta">24.28 MB • الإصدار 1.0</span>
+            </div>
+          </div>
+        </div>
+        <p class="app-desc">
+          تطبيق خاص لمعرفة حالة الرصيد، ومن خلاله تستطيع معرفة كافة التفاصيل المتعلقة برصيدك بدقة وسهولة.
+        </p>
+      </div>
+      <div class="app-btns-stack">
+        <button class="btn-app-action" onclick="openAboutModal()" type="button">
+          <span class="material-symbols-outlined">info</span>
+          <span>عن التطبيق</span>
+        </button>
+        <a class="btn-app-action" download="BudgetIndicator.apk" href="BudgetIndicator.apk">
+          <span class="material-symbols-outlined">download</span>
+          <span>تحميل التطبيق</span>
+        </a>
+      </div>
+    </div>
 
-<!-- خانة التطبيقات القادمة -->
-<div class="rounded-2xl bg-surface-container/30 border border-dashed border-outline-variant/30 backdrop-blur-xl p-6 min-h-[220px]">
-</div>
-</div>
+    <!-- خانة التطبيقات القادمة -->
+    <div class="app-empty-slot"></div>
+  </div>
 </main>
 
 <!-- ==================== الصفحة 3: تسجيل الدخول ==================== -->
-<main class="page-view w-full max-w-md mx-auto px-4 pt-10 pb-16" id="view-login">
-<div class="rounded-3xl bg-surface-container/80 border border-outline-variant/50 backdrop-blur-2xl p-8 shadow-2xl">
-<div class="flex items-center justify-between mb-6 pb-3 border-b border-outline-variant/30">
-<h2 class="text-xl font-bold text-on-surface">تسجيل الدخول</h2>
-<button class="text-xs text-outline hover:text-primary flex items-center gap-1 transition-colors cursor-pointer" onclick="navigateTo('home')" type="button">
-<span>الرئيسية</span>
-<span class="material-symbols-outlined text-[16px]">arrow_back</span>
-</button>
-</div>
+<main class="page-view auth-container" id="view-login">
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <h2 class="auth-card-title">تسجيل الدخول</h2>
+      <button class="auth-back-link" onclick="navigateTo('home')" type="button">
+        <span>الرئيسية</span>
+        <span class="material-symbols-outlined" style="font-size: 16px; transform: rotate(180deg);">arrow_forward</span>
+      </button>
+    </div>
 
-<form class="space-y-4" id="loginForm" onsubmit="handleLogin(event)">
-<div class="space-y-4" id="loginFieldsBlock">
-<div>
-<label class="block text-xs font-semibold text-on-surface-variant mb-1.5">البريد الإلكتروني</label>
-<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/50 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="loginEmail" placeholder="name@example.com" required="" type="email"/>
-</div>
-<div>
-<label class="block text-xs font-semibold text-on-surface-variant mb-1.5">كلمة المرور</label>
-<div class="relative flex items-center">
-<input class="w-full h-11 pr-3.5 pl-11 rounded-xl bg-surface-container-lowest border border-outline-variant/50 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="loginPassword" placeholder="••••••••" required="" type="password"/>
-<button class="absolute left-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors flex items-center justify-center cursor-pointer p-1" onclick="const inp=document.getElementById('loginPassword'); const ic=this.querySelector('.material-symbols-outlined'); if(inp.type==='password'){ inp.type='text'; ic.textContent='visibility_off'; } else { inp.type='password'; ic.textContent='visibility'; }" title="إظهار/إخفاء كلمة المرور" type="button">
-<span class="material-symbols-outlined text-[19px]">visibility</span>
-</button>
-</div>
-<div class="flex justify-end mt-2">
-<button class="text-xs text-outline hover:text-primary transition-colors cursor-pointer" onclick="toggleResetPasswordView(true)" type="button">
-نسيت كلمة المرور؟
-</button>
-</div>
-</div>
-<button class="w-full h-11 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-primary font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 mt-6 cursor-pointer" id="loginSubmitBtn" type="submit">
-<span>دخول</span>
-<span class="material-symbols-outlined text-[18px]">login</span>
-</button>
-</div>
+    <form class="auth-form-space" id="loginForm" onsubmit="handleLogin(event)">
+      <div class="auth-form-space" id="loginFieldsBlock">
+        <div>
+          <label class="form-label">البريد الإلكتروني</label>
+          <input class="form-input" id="loginEmail" placeholder="name@example.com" required="" type="email"/>
+        </div>
+        <div>
+          <label class="form-label">كلمة المرور</label>
+          <div class="input-password-wrapper">
+            <input class="form-input" id="loginPassword" placeholder="••••••••" required="" type="password"/>
+            <button class="toggle-pw-btn" onclick="const inp=document.getElementById('loginPassword'); const ic=this.querySelector('.material-symbols-outlined'); if(inp.type==='password'){ inp.type='text'; ic.textContent='visibility_off'; } else { inp.type='password'; ic.textContent='visibility'; }" title="إظهار/إخفاء كلمة المرور" type="button">
+              <span class="material-symbols-outlined" style="font-size: 19px;">visibility</span>
+            </button>
+          </div>
+          <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+            <button class="forgot-pw-link" onclick="toggleResetPasswordView(true)" type="button">
+              نسيت كلمة المرور؟
+            </button>
+          </div>
+        </div>
+        <button class="btn-auth-submit" id="loginSubmitBtn" type="submit">
+          <span>دخول</span>
+          <span class="material-symbols-outlined" style="font-size: 18px;">login</span>
+        </button>
+      </div>
 
-<div class="hidden space-y-4 pt-1" id="resetPasswordBlock">
-<div class="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/40 text-xs text-on-surface-variant leading-relaxed">
-أدخل بريدك الإلكتروني المسجل وسنرسل لك رابطاً لإعادة تعيين كلمة المرور فوراً عبر صفحة الاستعادة المخصصة.
-</div>
-<div>
-<label class="block text-xs font-semibold text-on-surface-variant mb-1.5">البريد الإلكتروني لاستعادة الحساب</label>
-<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/50 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="resetEmail" placeholder="name@example.com" type="email"/>
-</div>
-<button class="w-full h-11 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-primary font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 mt-4 cursor-pointer" id="resetSubmitBtn" onclick="handleResetPassword(event)" type="button">
-<span>إرسال رابط استعادة كلمة المرور</span>
-<span class="material-symbols-outlined text-[18px]">send</span>
-</button>
-<div class="flex justify-center pt-2">
-<button class="text-xs text-outline hover:text-primary flex items-center gap-1 transition-colors cursor-pointer" onclick="toggleResetPasswordView(false)" type="button">
-<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
-<span>العودة لتسجيل الدخول</span>
-</button>
-</div>
-</div>
-</form>
+      <div class="hidden auth-form-space" id="resetPasswordBlock" style="padding-top: 0.25rem;">
+        <div class="reset-block-info">
+          أدخل بريدك الإلكتروني المسجل وسنرسل لك رابطاً لإعادة تعيين كلمة المرور فوراً عبر صفحة الاستعادة المخصصة.
+        </div>
+        <div>
+          <label class="form-label">البريد الإلكتروني لاستعادة الحساب</label>
+          <input class="form-input" id="resetEmail" placeholder="name@example.com" type="email"/>
+        </div>
+        <button class="btn-auth-submit" id="resetSubmitBtn" onclick="handleResetPassword(event)" style="margin-top: 1rem;" type="button">
+          <span>إرسال رابط استعادة كلمة المرور</span>
+          <span class="material-symbols-outlined" style="font-size: 18px;">send</span>
+        </button>
+        <div style="display: flex; justify-content: center; padding-top: 0.5rem;">
+          <button class="auth-back-link" onclick="toggleResetPasswordView(false)" type="button">
+            <span class="material-symbols-outlined" style="font-size: 15px;">arrow_forward</span>
+            <span>العودة لتسجيل الدخول</span>
+          </button>
+        </div>
+      </div>
+    </form>
 
-<div class="mt-6 pt-4 border-t border-outline-variant/20 text-center">
-<p class="text-xs text-outline">ليس لديك حساب؟ 
-<button class="text-primary hover:underline font-semibold mr-1 cursor-pointer" onclick="navigateTo('register')" type="button">إنشاء حساب جديد</button>
-</p>
-</div>
-</div>
+    <div class="auth-footer-prompt">
+      <p>ليس لديك حساب؟ 
+        <button class="auth-switch-btn" onclick="navigateTo('register')" type="button">إنشاء حساب جديد</button>
+      </p>
+    </div>
+  </div>
 </main>
 
 <!-- ==================== الصفحة 4: إنشاء حساب ==================== -->
-<main class="page-view w-full max-w-md mx-auto px-4 pt-10 pb-16" id="view-register">
-<div class="rounded-3xl bg-surface-container/80 border border-outline-variant/50 backdrop-blur-2xl p-8 shadow-2xl">
-<div class="flex items-center justify-between mb-6 pb-3 border-b border-outline-variant/30">
-<h2 class="text-xl font-bold text-on-surface">إنشاء حساب جديد</h2>
-<button class="text-xs text-outline hover:text-primary flex items-center gap-1 transition-colors cursor-pointer" onclick="navigateTo('home')" type="button">
-<span>الرئيسية</span>
-<span class="material-symbols-outlined text-[16px]">arrow_back</span>
-</button>
-</div>
-<form class="space-y-4" id="registerForm" onsubmit="handleRegister(event)">
-<div>
-<label class="block text-xs font-semibold text-on-surface-variant mb-1.5">الاسم الكامل</label>
-<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/50 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="regName" placeholder="الاسم الكامل" required="" type="text"/>
-</div>
-<div>
-<label class="block text-xs font-semibold text-on-surface-variant mb-1.5">البريد الإلكتروني</label>
-<input class="w-full h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/50 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="regEmail" placeholder="name@example.com" required="" type="email"/>
-</div>
-<div>
-<label class="block text-xs font-semibold text-on-surface-variant mb-1.5">كلمة المرور (6 أحرف أو أرقام على الأقل)</label>
-<div class="relative flex items-center">
-<input class="w-full h-11 pr-3.5 pl-11 rounded-xl bg-surface-container-lowest border border-outline-variant/50 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="regPassword" minlength="6" placeholder="••••••••" required="" type="password"/>
-<button class="absolute left-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors flex items-center justify-center cursor-pointer p-1" onclick="const inp=document.getElementById('regPassword'); const ic=this.querySelector('.material-symbols-outlined'); if(inp.type==='password'){ inp.type='text'; ic.textContent='visibility_off'; } else { inp.type='password'; ic.textContent='visibility'; }" title="إظهار/إخفاء كلمة المرور" type="button">
-<span class="material-symbols-outlined text-[19px]">visibility</span>
-</button>
-</div>
-</div>
-<button class="w-full h-11 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/60 text-primary font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 mt-6 cursor-pointer" id="regSubmitBtn" type="submit">
-<span>تسجيل الحساب الآن</span>
-<span class="material-symbols-outlined text-[18px]">person_add</span>
-</button>
-</form>
-<div class="mt-6 pt-4 border-t border-outline-variant/20 text-center">
-<p class="text-xs text-outline">لديك حساب بالفعل؟ 
-<button class="text-primary hover:underline font-semibold mr-1 cursor-pointer" onclick="navigateTo('login')" type="button">تسجيل الدخول</button>
-</p>
-</div>
-</div>
+<main class="page-view auth-container" id="view-register">
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <h2 class="auth-card-title">إنشاء حساب جديد</h2>
+      <button class="auth-back-link" onclick="navigateTo('home')" type="button">
+        <span>الرئيسية</span>
+        <span class="material-symbols-outlined" style="font-size: 16px; transform: rotate(180deg);">arrow_forward</span>
+      </button>
+    </div>
+    <form class="auth-form-space" id="registerForm" onsubmit="handleRegister(event)">
+      <div>
+        <label class="form-label">الاسم الكامل</label>
+        <input class="form-input" id="regName" placeholder="الاسم الكامل" required="" type="text"/>
+      </div>
+      <div>
+        <label class="form-label">البريد الإلكتروني</label>
+        <input class="form-input" id="regEmail" placeholder="name@example.com" required="" type="email"/>
+      </div>
+      <div>
+        <label class="form-label">كلمة المرور (6 أحرف أو أرقام على الأقل)</label>
+        <div class="input-password-wrapper">
+          <input class="form-input" id="regPassword" minlength="6" placeholder="••••••••" required="" type="password"/>
+          <button class="toggle-pw-btn" onclick="const inp=document.getElementById('regPassword'); const ic=this.querySelector('.material-symbols-outlined'); if(inp.type==='password'){ inp.type='text'; ic.textContent='visibility_off'; } else { inp.type='password'; ic.textContent='visibility'; }" title="إظهار/إخفاء كلمة المرور" type="button">
+            <span class="material-symbols-outlined" style="font-size: 19px;">visibility</span>
+          </button>
+        </div>
+      </div>
+      <button class="btn-auth-submit" id="regSubmitBtn" type="submit">
+        <span>تسجيل الحساب الآن</span>
+        <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
+      </button>
+    </form>
+    <div class="auth-footer-prompt">
+      <p>لديك حساب بالفعل؟ 
+        <button class="auth-switch-btn" onclick="navigateTo('login')" type="button">تسجيل الدخول</button>
+      </p>
+    </div>
+  </div>
 </main>
 
 <!-- الفوتر المعتمد مع رابط سياسة الخصوصية المنفصل في الأسفل -->
-<footer class="w-full border-t border-outline-variant/20 bg-surface-container-lowest/80 py-8">
-<div class="max-w-5xl mx-auto px-6 flex flex-col items-center justify-center gap-2.5 text-xs text-outline">
-<p class="font-sans text-xs">© 2026 جميع الحقوق محفوظة.</p>
-<a class="text-[11px] text-outline hover:text-primary transition-colors inline-flex items-center gap-1" href="privacy.html">
-<span>سياسة الخصوصية</span>
-</a>
-</div>
+<footer class="site-footer">
+  <div class="footer-content">
+    <p>© 2026 جميع الحقوق محفوظة.</p>
+    <a class="footer-privacy-link" href="privacy.html">
+      <span>سياسة الخصوصية</span>
+    </a>
+  </div>
 </footer>
 
 <!-- نافذة عن التطبيق المنبثقة: ترويسة مصمتة 100% معزولة بالكامل تمنع ظهور أي نص خلفها + النص الكامل الشامل -->
-<div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 opacity-0 transition-opacity duration-300" id="aboutModal">
-<div class="relative w-full max-w-lg max-h-[85vh] rounded-3xl bg-[#141312] border border-outline-variant/60 shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
-<div class="sticky top-0 z-20 bg-[#181716] border-b border-outline-variant/40 px-5 sm:px-6 py-4 flex items-center justify-between shadow-md">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-surface-container-highest border border-primary/40 text-primary flex items-center justify-center shadow-inner overflow-hidden p-1.5 shrink-0">
-<img alt="Budget Indicator" class="w-full h-full object-contain filter drop-shadow invert brightness-200" height="40" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-o-b50TQPcER8KtT3BVwEsSUpWSIPIeQ9fG-fHJsYGO-eeDh-QpEeDncin4etO9USDVjc8QAamYAxXY7NonIQFOKK0_OYLx7zQXv_l6pxvSOIs0I1U60q1jEjqSDtLlJfaJtPdI8RFAE3IRVg85QVLlSW8foYyRqDxBmZpZn3-rr6fof-LhwOs0gzkmkvbt2bfSEnTeoZ5dFROLj3zNcOJEL3eZOrTybE_GLT_y59S9AxV4XkEktFXUtn4c4NjiKJOCE" width="40"/>
-</div>
-<div>
-<h3 class="text-base sm:text-lg font-bold text-on-surface leading-tight">Budget indicator</h3>
-<span class="inline-block text-xs font-sans text-secondary mt-0.5">24.28 MB • الإصدار 1.0</span>
-</div>
-</div>
-<button class="w-9 h-9 rounded-xl bg-surface-container-highest hover:bg-surface-container-high border border-outline-variant/50 text-outline hover:text-primary flex items-center justify-center transition-colors cursor-pointer" onclick="closeAboutModal()" title="إغلاق" type="button">
-<span class="material-symbols-outlined text-[20px]">close</span>
-</button>
-</div>
+<div class="modal-overlay hidden" id="aboutModal">
+  <div class="modal-box">
+    <div class="modal-sticky-header">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="app-icon-wrapper" style="width: 2.5rem; height: 2.5rem; padding: 0.375rem; shrink: 0;">
+          <img alt="Budget Indicator" height="40" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-o-b50TQPcER8KtT3BVwEsSUpWSIPIeQ9fG-fHJsYGO-eeDh-QpEeDncin4etO9USDVjc8QAamYAxXY7NonIQFOKK0_OYLx7zQXv_l6pxvSOIs0I1U60q1jEjqSDtLlJfaJtPdI8RFAE3IRVg85QVLlSW8foYyRqDxBmZpZn3-rr6fof-LhwOs0gzkmkvbt2bfSEnTeoZ5dFROLj3zNcOJEL3eZOrTybE_GLT_y59S9AxV4XkEktFXUtn4c4NjiKJOCE" width="40"/>
+        </div>
+        <div>
+          <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--on-surface); line-height: 1.25;">Budget indicator</h3>
+          <span class="app-meta">24.28 MB • الإصدار 1.0</span>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeAboutModal()" title="إغلاق" type="button">
+        <span class="material-symbols-outlined" style="font-size: 20px;">close</span>
+      </button>
+    </div>
 
-<div class="overflow-y-auto px-5 sm:px-6 py-5 space-y-6 text-on-surface font-sans text-xs sm:text-sm leading-relaxed" style="overscroll-behavior: contain;">
-<div class="space-y-3 pb-2 border-b border-outline-variant/30">
-<p class="text-on-surface font-medium leading-relaxed">
-في إدارة الميزانية، رقم الرصيد وحده لا يكفي. الأهم أن ترى ما تبقّى من الشهر إلى جانب ما تبقّى من رصيدك، لتفهم وضعك قبل أن تتفاجأ بنهاية الشهر.
-</p>
-<p class="text-on-surface-variant leading-relaxed">
-يجمع مؤشر الميزانية هذين المؤشرين في واجهة واحدة: «المتبقي من الشهر» يوضح نسبة الأيام المتبقية من الشهر الحالي، و«المتبقي من الرصيد» يوضح نسبة رصيدك الحالي مقارنة برصيد بداية الشهر المسجّل. اقرأهما جنباً إلى جنب لتلاحظ إن كان رصيدك يتناقص أسرع من الوقت. فإذا بقي نحو نصف الشهر، بينما انخفض الرصيد إلى نحو الربع، يظهر لك هذا الفرق بوضوح وتستطيع أن تعيد ضبط إنفاقك مبكراً.
-</p>
-<p class="text-on-surface-variant leading-relaxed">
-مؤشر الميزانية يحوّل سجلّك اليدوي إلى قراءة عملية: كم بقي؟ ما الحد اليومي المناسب وفق رصيدك والأيام المتبقية؟ وإلى متى قد يغطيك معدل إنفاقك المسجّل؟
-</p>
-</div>
+    <div class="modal-scroll-content">
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(65, 59, 44, 0.3);">
+        <p style="color: var(--on-surface); font-weight: 500;">
+          في إدارة الميزانية، رقم الرصيد وحده لا يكفي. الأهم أن ترى ما تبقّى من الشهر إلى جانب ما تبقّى من رصيدك، لتفهم وضعك قبل أن تتفاجأ بنهاية الشهر.
+        </p>
+        <p style="color: var(--on-surface-variant);">
+          يجمع مؤشر الميزانية هذين المؤشرين في واجهة واحدة: «المتبقي من الشهر» يوضح نسبة الأيام المتبقية من الشهر الحالي، و«المتبقي من الرصيد» يوضح نسبة رصيدك الحالي مقارنة برصيد بداية الشهر المسجّل. اقرأهما جنباً إلى جنب لتلاحظ إن كان رصيدك يتناقص أسرع من الوقت. فإذا بقي نحو نصف الشهر، بينما انخفض الرصيد إلى نحو الربع، يظهر لك هذا الفرق بوضوح وتستطيع أن تعيد ضبط إنفاقك مبكراً.
+        </p>
+        <p style="color: var(--on-surface-variant);">
+          مؤشر الميزانية يحوّل سجلّك اليدوي إلى قراءة عملية: كم بقي؟ ما الحد اليومي المناسب وفق رصيدك والأيام المتبقية؟ وإلى متى قد يغطيك معدل إنفاقك المسجّل؟
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>رصيدك في لمحة</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-تعرض اللوحة الرئيسية الرصيد المتبقي، والحد اليومي المحسوب من رصيدك والأيام المتبقية، وعدد الأيام المتبقية، ونسبة الشهر الباقية، ونسبة الرصيد الباقي مقارنة برصيد بداية الشهر. وتساعد الألوان المتدرجة في مؤشر الرصيد على ملاحظة انخفاضه بسرعة.
-</p>
-<p class="text-on-surface-variant leading-relaxed">
-كما تعرض مؤشرات الميزانية معدل الإنفاق المسجّل، ومدة تغطية الرصيد، والتاريخ التقديري لنفاده استناداً إلى ذلك المعدل، عندما تتوفر بيانات كافية. بدلاً من متابعة رقم الرصيد وحده، تحصل على صورة أوضح لما قد يعنيه هذا الرصيد للأيام القادمة.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>رصيدك في لمحة</span>
+        </h4>
+        <p style="color: var(--on-surface-variant); margin-bottom: 0.5rem;">
+          تعرض اللوحة الرئيسية الرصيد المتبقي، والحد اليومي المحسوب من رصيدك والأيام المتبقية، وعدد الأيام المتبقية، ونسبة الشهر الباقية، ونسبة الرصيد الباقي مقارنة برصيد بداية الشهر. وتساعد الألوان المتدرجة في مؤشر الرصيد على ملاحظة انخفاضه بسرعة.
+        </p>
+        <p style="color: var(--on-surface-variant);">
+          كما تعرض مؤشرات الميزانية معدل الإنفاق المسجّل، ومدة تغطية الرصيد، والتاريخ التقديري لنفاده استناداً إلى ذلك المعدل، عندما تتوفر بيانات كافية. بدلاً من متابعة رقم الرصيد وحده، تحصل على صورة أوضح لما قد يعنيه هذا الرصيد للأيام القادمة.
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>سجّل حركاتك بنفسك</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-أدخل رصيدك الافتتاحي لبدء السجل، ثم أضف المدخول والنفقات من واجهة تسجيل مخصصة. تُحدَّث قراءة الميزانية والتحليلات وفق الحركات التي تسجّلها. مؤشر الميزانية للميزانية اليدوية، ولا يحتاج إلى ربط حسابك البنكي.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>سجّل حركاتك بنفسك</span>
+        </h4>
+        <p style="color: var(--on-surface-variant);">
+          أدخل رصيدك الافتتاحي لبدء السجل، ثم أضف المدخول والنفقات من واجهة تسجيل مخصصة. تُحدَّث قراءة الميزانية والتحليلات وفق الحركات التي تسجّلها. مؤشر الميزانية للميزانية اليدوية، ولا يحتاج إلى ربط حسابك البنكي.
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>افهم أداءك أسبوعاً وشهراً وسنة</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-في قسم التحليل المالي، اختر هذا الأسبوع أو هذا الشهر أو هذه السنة لمراجعة الدخل، والنفقات، والصافي التراكمي. تساعدك الرسوم على رؤية ما دخل إلى ميزانيتك وما خرج منها، ومتابعة أثر الحركات المسجلة عبر الفترة.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>افهم أداءك أسبوعاً وشهراً وسنة</span>
+        </h4>
+        <p style="color: var(--on-surface-variant);">
+          في قسم التحليل المالي، اختر هذا الأسبوع أو هذا الشهر أو هذه السنة لمراجعة الدخل، والنفقات، والصافي التراكمي. تساعدك الرسوم على رؤية ما دخل إلى ميزانيتك وما خرج منها، ومتابعة أثر الحركات المسجلة عبر الفترة.
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>راقب اتجاه الرصيد وقارن الأداء</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-تابع اتجاه رصيدك على مدى الأسبوع أو الشهر أو السنة. وقارن الشهر الحالي بالشهر السابق، مع مؤشرات توضح مقدار التغير وحصة الرصيد الحالية. تساعدك المقارنة على فهم الاتجاه، لا الاكتفاء برقم اليوم.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>راقب اتجاه الرصيد وقارن الأداء</span>
+        </h4>
+        <p style="color: var(--on-surface-variant);">
+          تابع اتجاه رصيدك على مدى الأسبوع أو الشهر أو السنة. وقارن الشهر الحالي بالشهر السابق، مع مؤشرات توضح مقدار التغير وحصة الرصيد الحالية. تساعدك المقارنة على فهم الاتجاه، لا الاكتفاء برقم اليوم.
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>خطّط لما تبقّى من السنة</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-تعرض خطة الرصيد الحد اليومي الذي يساعدك على توزيع رصيدك الحالي حتى نهاية كل شهر متبقٍ من السنة، مع عدد الأيام والحد اليومي لكل نهاية شهر. تُحسب الخطة من تاريخ اليوم، وتشمل اليوم الحالي، لتعرف كيف يؤثر استمرارك في الإنفاق على رصيدك.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>خطّط لما تبقّى من السنة</span>
+        </h4>
+        <p style="color: var(--on-surface-variant);">
+          تعرض خطة الرصيد الحد اليومي الذي يساعدك على توزيع رصيدك الحالي حتى نهاية كل شهر متبقٍ من السنة، مع عدد الأيام والحد اليومي لكل نهاية شهر. تُحسب الخطة من تاريخ اليوم، وتشمل اليوم الحالي، لتعرف كيف يؤثر استمرارك في الإنفاق على رصيدك.
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>اختبر أثر المصروف قبل أن تقرره</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-هل تفكر في مصروف إضافي؟ أدخل قيمته في محاكي «ماذا لو؟» لتشاهد الرصيد المتوقع بعده، والحد اليومي الجديد، والفرق عن المسموح حالياً، وآخر يوم يغطيه الرصيد وفق البيانات المتاحة. جرّب أثر المصروف على خطتك قبل اتخاذ القرار.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>اختبر أثر المصروف قبل أن تقرره</span>
+        </h4>
+        <p style="color: var(--on-surface-variant);">
+          هل تفكر في مصروف إضافي؟ أدخل قيمته في محاكي «ماذا لو؟» لتشاهد الرصيد المتوقع بعده، والحد اليومي الجديد، والفرق عن المسموح حالياً، وآخر يوم يغطيه الرصيد وفق البيانات المتاحة. جرّب أثر المصروف على خطتك قبل اتخاذ القرار.
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>قراءة تحليلية مبنية على بياناتك</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-يربط التحليل الذكي بين الرصيد ومعدل الإنفاق والأيام المتبقية، ويقارن متوسط مصروفاتك المسجّل بالحد اليومي المخطط. كما يوضح مستوى كفاية البيانات، فإذا لم تكن الحركات كافية لقراءة موثوقة، يخبرك بذلك بدلاً من عرض نتيجة توحي بدقة غير متاحة.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>قراءة تحليلية مبنية على بياناتك</span>
+        </h4>
+        <p style="color: var(--on-surface-variant);">
+          يربط التحليل الذكي بين الرصيد ومعدل الإنفاق والأيام المتبقية، ويقارن متوسط مصروفاتك المسجّل بالحد اليومي المخطط. كما يوضح مستوى كفاية البيانات، فإذا لم تكن الحركات كافية لقراءة موثوقة، يخبرك بذلك بدلاً من عرض نتيجة توحي بدقة غير متاحة.
+        </p>
+      </div>
 
-<div class="space-y-2">
-<h4 class="text-sm sm:text-base font-bold text-primary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-<span>أخفِ المبالغ على الشاشة</span>
-</h4>
-<p class="text-on-surface-variant leading-relaxed">
-أخفِ المبالغ الظاهرة بلمسة، وتعود مخفية تلقائياً عند مغادرة الصفحة أو فقدان الشاشة للتركيز. إخفاء بصري سريع يساعدك على عدم إبقاء أرقام ميزانيتك معروضة أمام الآخرين.
-</p>
-</div>
+      <div>
+        <h4 class="modal-section-title">
+          <span class="modal-dot"></span>
+          <span>أخفِ المبالغ على الشاشة</span>
+        </h4>
+        <p style="color: var(--on-surface-variant);">
+          أخفِ المبالغ الظاهرة بلمسة، وتعود مخفية تلقائياً عند مغادرة الصفحة أو فقدان الشاشة للتركيز. إخفاء بصري سريع يساعدك على عدم إبقاء أرقام ميزانيتك معروضة أمام الآخرين.
+        </p>
+      </div>
 
-<div class="pt-3 border-t border-outline-variant/30">
-<p class="text-primary font-medium leading-relaxed">
-مؤشر الميزانية أداة لإدارة الميزانية يدوياً. راقب الوقت المتبقي مقابل الرصيد المتبقي، افهم وتيرة إنفاقك، وخطط لقراراتك اليومية على أساس أوضح.
-</p>
-</div>
-</div>
-</div>
+      <div style="padding-top: 0.75rem; border-top: 1px solid rgba(65, 59, 44, 0.3);">
+        <p style="color: var(--primary); font-weight: 500;">
+          مؤشر الميزانية أداة لإدارة الميزانية يدوياً. راقب الوقت المتبقي مقابل الرصيد المتبقي، افهم وتيرة إنفاقك، وخطط لقراراتك اليومية على أساس أوضح.
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- إشعار التنبيه المنبثق -->
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-surface-container-highest border border-primary/40 text-on-surface px-5 py-3 rounded-full shadow-2xl flex items-center gap-2.5 opacity-0 pointer-events-none transition-all duration-300 z-50 transform translate-y-3" id="toastNotification">
-<span class="material-symbols-outlined text-primary text-[20px]" id="toastIcon">check_circle</span>
-<span class="text-xs sm:text-sm font-semibold text-on-surface" id="toastMessage">تمت العملية بنجاح</span>
+<div class="toast-popup" id="toastNotification">
+  <span class="material-symbols-outlined" id="toastIcon" style="font-size: 20px; color: var(--primary);">check_circle</span>
+  <span class="toast-text" id="toastMessage">تمت العملية بنجاح</span>
 </div>
 
 <!-- سكربت التنقل وربط Supabase الذكي والنافذة المنبثقة والنسخ والراوتينغ النقي الخالي من أي Forced Reflow -->
@@ -587,8 +1306,8 @@
       if (modal) {
         modal.classList.remove('hidden');
         requestAnimationFrame(() => {
-          modal.classList.remove('opacity-0');
-          modal.firstElementChild.classList.remove('scale-95');
+          modal.style.opacity = '1';
+          if (modal.firstElementChild) modal.firstElementChild.style.transform = 'scale(1)';
         });
       }
     }
@@ -596,8 +1315,8 @@
     function closeAboutModal() {
       const modal = document.getElementById('aboutModal');
       if (modal) {
-        modal.classList.add('opacity-0');
-        modal.firstElementChild.classList.add('scale-95');
+        modal.style.opacity = '0';
+        if (modal.firstElementChild) modal.firstElementChild.style.transform = 'scale(0.95)';
         setTimeout(() => {
           modal.classList.add('hidden');
         }, 300);
@@ -719,16 +1438,14 @@
       toastMsg.textContent = message;
       if (toastIcon) {
         toastIcon.textContent = isSuccess ? 'check_circle' : 'error';
-        toastIcon.className = isSuccess ? 'material-symbols-outlined text-primary text-[20px]' : 'material-symbols-outlined text-red-400 text-[20px]';
+        toastIcon.style.color = isSuccess ? 'var(--primary)' : '#f87171';
       }
 
-      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
-      toast.classList.add('opacity-100', 'translate-y-0');
+      toast.classList.add('show');
 
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+        toast.classList.remove('show');
       }, 3000);
     }
 
